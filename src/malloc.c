@@ -6,19 +6,45 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:50:56 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/15 14:26:39 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/18 10:08:46 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/malloc.h"
 
-void	*my_malloc(size_t size)
+void	*alloc_tiny(size_t size)
 {
 	void	*p;
-	if (size == 0 || size > MAX_SIZE_ALLOC)
-		return NULL;
-	p = mmap(0, size + 1, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+
+	p = mmap(0, size + 1, PROT, MAP, -1, 0);
 	return p;
+}
+
+void	*alloc_small(size_t size)
+{
+	void	*p;
+
+	p = mmap(0, size + 1, PROT, MAP, -1, 0);
+	return p;
+}
+
+void	*alloc_large(size_t size)
+{
+	void	*p;
+
+	p = mmap(0, size + 1, PROT, MAP, -1, 0);
+	return p;
+}
+
+void	*my_malloc(size_t size)
+{
+	if (size < 0)
+		return (NULL);
+	else if (size < TINY_AREA)
+		return alloc_tiny(size);
+	else if (size < SMALL_AREA)
+		return alloc_small(size);
+	return alloc_large(size);
 }
 
 int	main(void)
