@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:51:23 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/18 09:59:12 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/18 14:36:38 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,32 @@ typedef struct		s_block
 typedef struct		s_page
 {
 	struct s_block	*tiny;
-	// struct s_block	*tinyEnd;
 	struct s_block	*small;
-	// struct s_block	*smallEnd;
 	struct s_block	*large;
-	// struct s_block	*largeEnd;
 }					t_page;
 
 t_page				g_page;
+
+/*
+** ALLOC_SIZE
+*/
+
+void	*alloc_tiny(size_t size, void *p);
+void	*alloc_small(size_t size, void *p);
+void	*alloc_large(size_t size, void *p);
+
+/*
+** HANDLER_BLOCK
+*/
+
+t_block *firstBlock(size_t size);
+t_block *addLastBlock(t_block *prev, size_t size);
+t_block	*getLastBlock(t_block *cur);
+t_block	*addBlock(size_t size);
+
+/*
+** MALLOC
+*/
 
 void	free(void *ptr);
 void	*my_malloc(size_t size);
