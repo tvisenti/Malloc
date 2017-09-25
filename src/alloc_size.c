@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 14:21:18 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/25 18:15:44 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/25 18:17:58 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_block		*create_new(t_block *old, size_t size, int is_tiny)
 	t_block	*new;
 
 	new = old + size + BLOCK_SIZEOF;
+	old->size -= size + BLOCK_SIZEOF;
 	new->size = size;
 	new->isFree = 0;
 	if (is_tiny == 0)
