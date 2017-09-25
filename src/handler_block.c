@@ -6,29 +6,30 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 14:17:25 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/18 14:29:46 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/25 15:30:51 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/malloc.h"
 
-t_block *firstBlock(size_t size)
+t_block		*first_block(size_t size)
 {
 	t_block *new;
 
-	new = mmap(0, size + sizeof(t_block), PROT, MAP, -1, 0);
+	if (!(new = mmap(0, size + BLOCK_SIZEOF, PROT, MAP, -1, 0)))
+		return (NULL);
 	new->size = size;
 	new->isFree = 0;
 	new->next = NULL;
-
-	return new;
+	return (new);
 }
 
-t_block *addLastBlock(t_block *prev, size_t size)
+t_block		*add_last_block(t_block *prev, size_t size)
 {
 	t_block *new;
 
-	new = mmap(0, size + sizeof(t_block), PROT, MAP, -1, 0);
+	if (!(new = mmap(0, size + BLOCK_SIZEOF, PROT, MAP, -1, 0)))
+		return (NULL);
 	new->size = size;
 	new->isFree = 0;
 	new->next = NULL;
@@ -36,7 +37,7 @@ t_block *addLastBlock(t_block *prev, size_t size)
 	return (new);
 }
 
-t_block	*getLastBlock(t_block *cur)
+t_block		*get_last_block(t_block *cur)
 {
 	t_block *tmp;
 
@@ -46,16 +47,4 @@ t_block	*getLastBlock(t_block *cur)
 		tmp = tmp->next;
 	}
 	return (tmp);
-}
-
-t_block	*addBlock(size_t size)
-{
-	t_block	*new;
-
-	printf("Creation block\n");
-	new = mmap(0, TINY_SIZE, PROT, MAP, -1, 0);
-	new->size = size;
-	new->isFree = 1;
-	new->next = NULL;
-	return (new);
 }

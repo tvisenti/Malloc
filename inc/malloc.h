@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:51:23 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/18 14:36:38 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/25 15:28:49 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 
 #define PROT PROT_READ | PROT_WRITE
 #define MAP MAP_ANON | MAP_PRIVATE
+
+#define BLOCK_SIZEOF sizeof(t_block)
+#define PAGE_SIZEOF sizeof(t_page)
 
 typedef struct		s_block
 {
@@ -56,10 +59,9 @@ void	*alloc_large(size_t size, void *p);
 ** HANDLER_BLOCK
 */
 
-t_block *firstBlock(size_t size);
-t_block *addLastBlock(t_block *prev, size_t size);
-t_block	*getLastBlock(t_block *cur);
-t_block	*addBlock(size_t size);
+t_block *first_block(size_t size);
+t_block *add_last_block(t_block *prev, size_t size);
+t_block	*get_last_block(t_block *cur);
 
 /*
 ** MALLOC
