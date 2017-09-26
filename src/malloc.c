@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:50:56 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/26 18:32:10 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/26 18:35:58 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int			main(void)
 	tiny2 = (char*)my_malloc(2);
 	tiny3 = (char*)my_malloc(3);
 
+	printf("SIZEOF BLOCK: %lu\n", BLOCK_SIZEOF);
 	printf("\nLarge\n");
 	while (g_page.large)
 	{
