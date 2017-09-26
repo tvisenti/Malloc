@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:50:56 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/25 16:19:14 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/26 18:32:10 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,40 +20,51 @@ void		*my_malloc(size_t size)
 	if ((int)size <= 0)
 		return (NULL);
 	else if (size < TINY_AREA)
-		return (alloc_tiny(size, p));
+		p = alloc_tiny(size);
 	else if (size < SMALL_AREA)
-		return (alloc_small(size, p));
-	return (alloc_large(size, p));
+		p = alloc_small(size);
+	else
+		p = alloc_large(size, p);
+	if (p == NULL)
+		return (NULL);
+	return (p + BLOCK_SIZEOF);
 }
 
 int			main(void)
 {
-	char	*strlarge1;
-	char	*strlarge2;
-	char	*strlarge3;
+	char	*large1;
+	char	*large2;
+	char	*large3;
 
-	char	*strsmall1;
-	char	*strsmall2;
-	char	*strsmall3;
+	char	*small1;
+	char	*small2;
+	char	*small3;
 
-	printf("\nPageSize: %d\n\n", getpagesize());
-	strlarge1 = (char*)my_malloc(11111);
-	strlarge2 = (char*)my_malloc(22222);
-	strlarge3 = (char*)my_malloc(33333);
+	char	*tiny1;
+	char	*tiny2;
+	char	*tiny3;
 
-	strsmall1 = (char*)my_malloc(333);
-	strsmall2 = (char*)my_malloc(444);
-	strsmall3 = (char*)my_malloc(555);
-	
+	large1 = (char*)my_malloc(11111);
+	large2 = (char*)my_malloc(22222);
+	large3 = (char*)my_malloc(33333);
+
+	small1 = (char*)my_malloc(333);
+	small2 = (char*)my_malloc(444);
+	small3 = (char*)my_malloc(555);
+
+	tiny1 = (char*)my_malloc(1);
+	tiny2 = (char*)my_malloc(2);
+	tiny3 = (char*)my_malloc(3);
+
 	printf("\nLarge\n");
 	while (g_page.large)
 	{
 		printf("\tp: %p\n\tsize: %zu\n\n", g_page.large, g_page.large->size);
 		g_page.large = g_page.large->next;
 	}
-	printf("strlarge1: %p\n", strlarge1);
-	printf("strlarge2: %p\n", strlarge2);
-	printf("strlarge3: %p\n", strlarge3);
+	printf("large_1: %p\n", large1);
+	printf("large_2: %p\n", large2);
+	printf("large_3: %p\n", large3);
 
 	printf("\nSmall\n");
 	while (g_page.small)
@@ -61,8 +72,18 @@ int			main(void)
 		printf("\tp: %p\n\tsize: %zu\n\n", g_page.small, g_page.small->size);
 		g_page.small = g_page.small->next;
 	}
-	printf("strsmall1: %p\n", strsmall1);
-	printf("strsmall2: %p\n", strsmall2);
-	printf("strsmall3: %p\n", strsmall3);
+	printf("small_1: %p\n", small1);
+	printf("small_2: %p\n", small2);
+	printf("small_3: %p\n", small3);
+
+	printf("\nTINY\n");
+	while (g_page.tiny)
+	{
+		printf("\tp: %p\n\tsize: %zu\n\n", g_page.tiny, g_page.tiny->size);
+		g_page.tiny = g_page.tiny->next;
+	}
+	printf("tiny_1: %p\n", tiny1);
+	printf("tiny_2: %p\n", tiny2);
+	printf("tiny_3: %p\n", tiny3);
 	return (0);
 }

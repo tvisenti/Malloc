@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:51:23 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/25 15:28:49 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/26 18:16:54 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <stdio.h>
 #include <sys/mman.h>
 #include <unistd.h>
+
+# define debug(str, x, y) printf("%s: P = %p, size = %zu\n", str, x, y)
 
 #define MAX_SIZE_ALLOC 10000000000
 
@@ -32,9 +34,8 @@
 
 typedef struct		s_block
 {
-	// void			*mem;
 	size_t			size;
-	int				isFree;
+	int				is_free;
 	struct s_block	*next;
 }					t_block;
 
@@ -51,9 +52,18 @@ t_page				g_page;
 ** ALLOC_SIZE
 */
 
-void	*alloc_tiny(size_t size, void *p);
-void	*alloc_small(size_t size, void *p);
+void	*alloc_tiny(size_t size);
+void	*alloc_small(size_t size);
 void	*alloc_large(size_t size, void *p);
+
+/*
+** ALLOC_SIZE
+*/
+
+t_block		*find_free_block(size_t size, int is_tiny);
+t_block		*create_new(t_block *old, size_t size);
+t_block		*init_new_block_small(size_t size);
+t_block		*init_new_block_tiny(size_t size);
 
 /*
 ** HANDLER_BLOCK

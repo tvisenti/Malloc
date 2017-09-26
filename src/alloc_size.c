@@ -6,82 +6,35 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 14:21:18 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/25 18:17:58 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/26 18:16:46 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/malloc.h"
 
-void		*alloc_tiny(size_t size, void *p)
-{
-	if (!g_page.tiny)
-	{
-		printf("J'existe pas encore\n");
-	}
-	else if (g_page.tiny && g_page.tiny->size <= size)
-	{
-		printf("Test\n");
-	}
-	return (p);
-}
-
-t_block		*create_new(t_block *old, size_t size, int is_tiny)
-{
-	t_block	*new;
-
-	new = old + size + BLOCK_SIZEOF;
-	old->size -= size + BLOCK_SIZEOF;
-	new->size = size;
-	new->isFree = 0;
-	if (is_tiny == 0)
-	{
-		new->next = g_page.small;
-		g_page.small = new;
-	}
-	else
-	{
-		new->next = g_page.tiny;
-		g_page.tiny = new;
-	}
-	printf("new: %p\n\n", new);
-	return (new);
-}
-
-t_block		*find_free_block_small(size_t size)
+void		*alloc_tiny(size_t size)
 {
 	t_block *tmp;
 
-	tmp = g_page.small;
-	while (tmp)
+	tmp = NULL;
+	if (!g_page.tiny)
 	{
-		if (tmp->isFree == 1 && tmp->size > size)
-		{
-			return (tmp);
-		}
-		tmp = tmp->next;
+		if (init_new_block_tiny(size) == NULL)
+			return (NULL);
+		return (create_new(g_page.tiny, size));
 	}
-	return (NULL);
-}
-
-t_block		*init_new_block_small(size_t size)
-{
-	t_block	*tmp;
-
-	if (!(tmp = mmap(0, SMALL_SIZE + BLOCK_SIZEOF + PAGE_SIZEOF,
-		PROT, MAP, -1, 0)))
-		return (NULL);
-	tmp += BLOCK_SIZEOF + PAGE_SIZEOF;
-	tmp->size = SMALL_SIZE - size;
-	tmp->isFree = 1;
-	if (!g_page.small)
-		tmp->next = NULL;
 	else
-		tmp->next = g_page.small;
-	g_page.small = tmp;
-	return (tmp);
+	{
+		if ((tmp = find_free_block(size, 1)) == NULL)
+		{
+			if ((tmp = init_new_block_tiny(size)) == NULL)
+				return (NULL);
+		}
+		return (create_new(tmp, size));
+	}
 }
 
-void		*alloc_small(size_t size, void *p)
+void		*alloc_small(size_t size)
 {
 	t_block *tmp;
 
@@ -90,18 +43,17 @@ void		*alloc_small(size_t size, void *p)
 	{
 		if (init_new_block_small(size) == NULL)
 			return (NULL);
-		return (create_new(g_page.small, size, 0));
+		return (create_new(g_page.small, size));
 	}
 	else
 	{
-		if ((tmp = find_free_block_small(size)) == NULL)
+		if ((tmp = find_free_block(size, 0)) == NULL)
 		{
 			if ((tmp = init_new_block_small(size)) == NULL)
 				return (NULL);
 		}
-		return (create_new(tmp, size, 0));
+		return (create_new(tmp, size));
 	}
-	return (p);
 }
 
 void		*alloc_large(size_t size, void *p)

@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 14:17:25 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/25 15:30:51 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/26 17:43:14 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_block		*first_block(size_t size)
 	if (!(new = mmap(0, size + BLOCK_SIZEOF, PROT, MAP, -1, 0)))
 		return (NULL);
 	new->size = size;
-	new->isFree = 0;
+	new->is_free = 0;
 	new->next = NULL;
 	return (new);
 }
@@ -31,7 +31,7 @@ t_block		*add_last_block(t_block *prev, size_t size)
 	if (!(new = mmap(0, size + BLOCK_SIZEOF, PROT, MAP, -1, 0)))
 		return (NULL);
 	new->size = size;
-	new->isFree = 0;
+	new->is_free = 0;
 	new->next = NULL;
 	prev->next = new;
 	return (new);
@@ -43,8 +43,6 @@ t_block		*get_last_block(t_block *cur)
 
 	tmp = cur;
 	while (tmp->next)
-	{
 		tmp = tmp->next;
-	}
 	return (tmp);
 }
