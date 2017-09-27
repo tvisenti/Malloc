@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 14:21:18 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/26 18:45:42 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/27 17:24:53 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_block		*find_free_block(size_t size, int is_tiny)
 			return (tmp);
 		tmp = tmp->next;
 	}
+	printf("NO BLOCK\n");
 	return (NULL);
 }
 
@@ -34,23 +35,25 @@ t_block		*create_new(t_block *old, size_t size)
 	t_block	*new;
 
 	new = old;
-	old += size + BLOCK_SIZEOF;
+	old = (void*)old + size + BLOCK_SIZEOF;
 	old->is_free = new->is_free;
 	old->size = new->size - size;
-	old->next = new->next;
+	// printf("next: %p\n", old->next);
+	old->next = NULL;
 	new->size = size;
 	new->is_free = 0;
 	new->next = old;
 	return (new);
 }
 
-t_block		*init_new_block_tiny(size_t size)
+t_block		*init_new_block_tiny()
 {
 	t_block	*new;
 
-	if (!(new = mmap(0, TINY_SIZE, PROT, MAP, -1, 0)))
+	printf("NEW\n");
+	if (!(new = mmap(0, TINY_SIZE + (100 * BLOCK_SIZEOF), PROT, MAP, -1, 0)))
 		return (NULL);
-	new->size = TINY_SIZE - size;
+	new->size = TINY_SIZE;
 	new->is_free = 1;
 	if (!g_page.tiny)
 		new->next = NULL;
@@ -60,13 +63,13 @@ t_block		*init_new_block_tiny(size_t size)
 	return (new);
 }
 
-t_block		*init_new_block_small(size_t size)
+t_block		*init_new_block_small()
 {
 	t_block	*new;
 
-	if (!(new = mmap(0, SMALL_SIZE, PROT, MAP, -1, 0)))
+	if (!(new = mmap(0, SMALL_SIZE + (100 * BLOCK_SIZEOF), PROT, MAP, -1, 0)))
 		return (NULL);
-	new->size = SMALL_SIZE - size;
+	new->size = SMALL_SIZE;
 	new->is_free = 1;
 	if (!g_page.small)
 		new->next = NULL;

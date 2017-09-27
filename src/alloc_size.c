@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 14:21:18 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/26 18:16:46 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/27 16:52:08 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void		*alloc_tiny(size_t size)
 	tmp = NULL;
 	if (!g_page.tiny)
 	{
-		if (init_new_block_tiny(size) == NULL)
+		if (init_new_block_tiny() == NULL)
 			return (NULL);
 		return (create_new(g_page.tiny, size));
 	}
@@ -27,7 +27,7 @@ void		*alloc_tiny(size_t size)
 	{
 		if ((tmp = find_free_block(size, 1)) == NULL)
 		{
-			if ((tmp = init_new_block_tiny(size)) == NULL)
+			if ((tmp = init_new_block_tiny()) == NULL)
 				return (NULL);
 		}
 		return (create_new(tmp, size));
@@ -41,7 +41,7 @@ void		*alloc_small(size_t size)
 	tmp = NULL;
 	if (!g_page.small)
 	{
-		if (init_new_block_small(size) == NULL)
+		if (init_new_block_small() == NULL)
 			return (NULL);
 		return (create_new(g_page.small, size));
 	}
@@ -49,7 +49,7 @@ void		*alloc_small(size_t size)
 	{
 		if ((tmp = find_free_block(size, 0)) == NULL)
 		{
-			if ((tmp = init_new_block_small(size)) == NULL)
+			if ((tmp = init_new_block_small()) == NULL)
 				return (NULL);
 		}
 		return (create_new(tmp, size));
