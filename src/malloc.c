@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:50:56 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/27 17:54:33 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/28 17:42:14 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,15 @@ int			main(void)
 	char *str = "TEST";
 	while (i < 1024)
 	{
-		addr = (char*)my_malloc(10);
+		addr = (char*)my_malloc(1000);
 		addr[0] = 42;
 		printf("p: %p\n", addr);
-		my_free(str);
+		my_free	(addr);
+		// addr = (char*)my_malloc(10);
+		// addr[0] = 42;
 		i++;
 	}
+	my_free(str);
 
 	return (0);
 	// char	*large1;

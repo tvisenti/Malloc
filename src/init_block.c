@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 14:21:18 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/27 17:24:53 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/28 15:58:19 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ t_block		*create_new(t_block *old, size_t size)
 	old = (void*)old + size + BLOCK_SIZEOF;
 	old->is_free = new->is_free;
 	old->size = new->size - size;
-	// printf("next: %p\n", old->next);
-	old->next = NULL;
+	old->next = new->next;
+	printf("old->size: %zu\n", old->size);
 	new->size = size;
 	new->is_free = 0;
 	new->next = old;
@@ -51,7 +51,7 @@ t_block		*init_new_block_tiny()
 	t_block	*new;
 
 	printf("NEW\n");
-	if (!(new = mmap(0, TINY_SIZE + (100 * BLOCK_SIZEOF), PROT, MAP, -1, 0)))
+	if (!(new = mmap(0, TINY_SIZE, PROT, MAP, -1, 0)))
 		return (NULL);
 	new->size = TINY_SIZE;
 	new->is_free = 1;
@@ -67,7 +67,7 @@ t_block		*init_new_block_small()
 {
 	t_block	*new;
 
-	if (!(new = mmap(0, SMALL_SIZE + (100 * BLOCK_SIZEOF), PROT, MAP, -1, 0)))
+	if (!(new = mmap(0, SMALL_SIZE, PROT, MAP, -1, 0)))
 		return (NULL);
 	new->size = SMALL_SIZE;
 	new->is_free = 1;

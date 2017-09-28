@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:51:23 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/27 18:28:28 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/09/28 16:25:25 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@
 
 # define debug(str, x, y) printf("%s: P = %p, size = %zu\n", str, x, y)
 
-# define MAX_SIZE_ALLOC 10000000000
+# define TINY_SIZE getpagesize() * 64 //n
+# define TINY_AREA 2048 // N
 
-# define TINY_SIZE getpagesize() * 16 //n
-# define TINY_AREA 256 // N
-
-# define SMALL_SIZE getpagesize() * 128 // m
-# define SMALL_AREA 4096 // M
+# define SMALL_SIZE getpagesize() * 256 // m
+# define SMALL_AREA 8192 // M
 
 # define PROT PROT_READ | PROT_WRITE
 # define MAP MAP_ANON | MAP_PRIVATE
@@ -47,6 +45,15 @@ typedef struct		s_page
 }					t_page;
 
 t_page				g_page;
+
+/*
+** FREE
+*/
+
+t_block		*find_block_for_free(t_block *cur, void *ptr);
+void		concat_free_next(t_block *prev, t_block *cur, t_block *next);
+void		free_next_ptr(t_block *prev_free);
+void		my_free(void *ptr);
 
 /*
 ** ALLOC_SIZE
@@ -77,7 +84,6 @@ t_block		*get_last_block(t_block *cur);
 ** MALLOC
 */
 
-void		my_free(void *ptr);
 void		*my_malloc(size_t size);
 void		*realloc(void *ptr, size_t size);
 void		show_alloc_mem();
