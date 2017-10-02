@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 17:32:06 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/28 18:16:03 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/02 12:45:15 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ t_block		*find_block_for_free(t_block *cur, void *ptr)
 	return (NULL);
 }
 
-void		concat_free_next(t_block *prev, t_block *cur, t_block *next)
+void		concat_free_next(t_block *prev, t_block *cur)
 {
+	t_block	*next;
+
+	next = cur->next ? cur->next : NULL;
 	cur->is_free = 1;
 	if (next && next->is_free == 1 &&
 	(((void*)cur + cur->size + BLOCK_SIZEOF) == next))
@@ -47,38 +50,39 @@ void		concat_free_next(t_block *prev, t_block *cur, t_block *next)
 	}
 }
 
-// (((void*)cur + cur->size + BLOCK_SIZEOF) == next))
-// (((void*)prev + prev->size + BLOCK_SIZEOF) == cur))
-
-
-int			free_zone_ptr(t_block *cur, t_block *free_ptr, size_t size)
+void		munmap_page_small(t_block *page, size_t size, t_block *prev)
 {
 	t_block	*tmp;
 
-	tmp = cur;
+	tmp = page;
+	if (tmp->next == NULL || prev->next == NULL)
+		return ;
 	while (tmp)
 	{
-		if (tmp == free_ptr && size == free_ptr->size)
+		if (tmp->size == size)
 		{
-			if (munmap(tmp, size) != 0)
-				return (0);
-			return (1);
+			prev->next = tmp->next;
+			munmap(tmp, size);
+			return ;
 		}
 		tmp = tmp->next;
+		if (find_block_for_free(page, &tmp) == NULL)
+			return ;
 	}
-	return (0);
 }
 
-void		free_next_ptr(t_block *prev_free)
+void		munmap_page_large(t_block *prev, t_block *freed)
 {
-	if (free_zone_ptr(prev_free->next, g_page.tiny, TINY_SIZE))
-		g_page.tiny = NULL;
-	else if (free_zone_ptr(prev_free->next, g_page.small, SMALL_SIZE))
-		g_page.small = NULL;
-	else if (free_zone_ptr(prev_free->next, g_page.large, prev_free->next->size))
+	if (freed == NULL)
+	{
+		munmap(prev, prev->size);
 		g_page.large = NULL;
+	}
 	else
-		concat_free_next(prev_free, prev_free->next, prev_free->next->next);
+	{
+		prev->next = freed->next;
+		munmap(freed, freed->size);
+	}
 }
 
 void		my_free(void *ptr)
@@ -87,25 +91,16 @@ void		my_free(void *ptr)
 
 	free_ptr = NULL;
 	if ((free_ptr = find_block_for_free(g_page.tiny, ptr)) != NULL)
-		free_next_ptr(free_ptr);
+	{
+		concat_free_next(free_ptr, free_ptr->next);
+		munmap_page_small(g_page.tiny, TINY_SIZE, free_ptr);
+	}
 	else if ((free_ptr = find_block_for_free(g_page.small, ptr)) != NULL)
-		free_next_ptr(free_ptr);
+	{
+		concat_free_next(free_ptr, free_ptr->next);
+		munmap_page_small(g_page.small, SMALL_SIZE, free_ptr);
+	}
 	else if ((free_ptr = find_block_for_free(g_page.large, ptr)) != NULL)
-		free_next_ptr(free_ptr);
-	return ;
-
-	// t_block	*tmp;
-	//
-	// if ((tmp = (t_block*)ptr) == NULL)
-	// {
-	// 	printf("WAT\n");
-	// 	return ;
-	// }
-	// if (tmp->size <= 0)
-	// 	return ;
-	// printf("ptr: %p\n", tmp);
-	// printf("size: %zu\n", tmp->size);
-
-	// free
+		munmap_page_large(free_ptr, free_ptr->next);
 	return ;
 }

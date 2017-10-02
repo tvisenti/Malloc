@@ -6,11 +6,49 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:50:56 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/28 17:42:14 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/02 14:28:08 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/malloc.h"
+
+size_t	show_alloc_page(t_block *cur, char* zone)
+{
+	t_block	*tmp;
+	size_t	count;
+
+	count = 0;
+	tmp = cur;
+	if (tmp != NULL)
+	printf("%s : %p\n", zone, tmp);
+	else
+	{
+		printf("%s : No zone\n", zone);
+		return (0);
+	}
+	while (tmp)
+	{
+		if (tmp->is_free == 0)
+		{
+			printf("%p - %p : %zu octets\n", (tmp + BLOCK_SIZEOF),
+			(tmp + tmp->size + BLOCK_SIZEOF), tmp->size);
+			count += tmp->size;
+		}
+		tmp = tmp->next;
+	}
+	return (count);
+}
+
+void 		show_alloc_mem()
+{
+	size_t count;
+
+	count = 0;
+	count += show_alloc_page(g_page.tiny, "TINY");
+	count += show_alloc_page(g_page.small, "SMALL");
+	count += show_alloc_page(g_page.large, "LARGE");
+	printf("Total: %zu\n", count);
+}
 
 void		*my_malloc(size_t size)
 {
@@ -18,15 +56,15 @@ void		*my_malloc(size_t size)
 
 	p = NULL;
 	if ((int)size <= 0)
-		return (NULL);
+	return (NULL);
 	else if (size < TINY_AREA)
-		p = alloc_tiny(size);
+	p = alloc_tiny(size);
 	else if (size < SMALL_AREA)
-		p = alloc_small(size);
+	p = alloc_small(size);
 	else
-		p = alloc_large(size, p);
+	p = alloc_large(size, p);
 	if (p == NULL)
-		return (NULL);
+	return (NULL);
 	return ((void*)p + BLOCK_SIZEOF);
 }
 
@@ -35,17 +73,16 @@ int			main(void)
 	int i = 0;
 	char *addr;
 	char *str = "TEST";
-	while (i < 1024)
+	while (i < 10)
 	{
 		addr = (char*)my_malloc(1000);
 		addr[0] = 42;
-		printf("p: %p\n", addr);
-		my_free	(addr);
-		// addr = (char*)my_malloc(10);
-		// addr[0] = 42;
+		// my_free(addr);
+		// printf("p: %p\n", addr);
 		i++;
 	}
 	my_free(str);
+	show_alloc_mem();
 
 	return (0);
 	// char	*large1;

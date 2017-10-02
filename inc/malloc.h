@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:51:23 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/28 16:25:25 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/02 14:21:08 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ t_page				g_page;
 */
 
 t_block		*find_block_for_free(t_block *cur, void *ptr);
-void		concat_free_next(t_block *prev, t_block *cur, t_block *next);
-void		free_next_ptr(t_block *prev_free);
+void		concat_free_next(t_block *prev, t_block *cur);
+void		munmap_page_large(t_block *prev, t_block *freed);
+void		munmap_page_small(t_block *page, size_t size, t_block *prev);
 void		my_free(void *ptr);
 
 /*
@@ -84,6 +85,7 @@ t_block		*get_last_block(t_block *cur);
 ** MALLOC
 */
 
+size_t	show_alloc_page(t_block *cur, char* zone);
 void		*my_malloc(size_t size);
 void		*realloc(void *ptr, size_t size);
 void		show_alloc_mem();

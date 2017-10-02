@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 14:21:18 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/09/28 15:58:19 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/02 14:48:08 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,10 @@ t_block		*find_free_block(size_t size, int is_tiny)
 		tmp = g_page.small;
 	while (tmp)
 	{
-		if (tmp->is_free == 1 && tmp->size > size)
+		if (tmp->is_free == 1 && tmp->size > size + BLOCK_SIZEOF)
 			return (tmp);
 		tmp = tmp->next;
 	}
-	printf("NO BLOCK\n");
 	return (NULL);
 }
 
@@ -35,11 +34,11 @@ t_block		*create_new(t_block *old, size_t size)
 	t_block	*new;
 
 	new = old;
-	old = (void*)old + size + BLOCK_SIZEOF;
+	old = (void*)new + size + BLOCK_SIZEOF;
+	printf("%p - %p, size: %zu, of: %zu\n", new + BLOCK_SIZEOF, old, size, BLOCK_SIZEOF);
 	old->is_free = new->is_free;
-	old->size = new->size - size;
+	old->size = new->size - size - BLOCK_SIZEOF;
 	old->next = new->next;
-	printf("old->size: %zu\n", old->size);
 	new->size = size;
 	new->is_free = 0;
 	new->next = old;
@@ -50,7 +49,6 @@ t_block		*init_new_block_tiny()
 {
 	t_block	*new;
 
-	printf("NEW\n");
 	if (!(new = mmap(0, TINY_SIZE, PROT, MAP, -1, 0)))
 		return (NULL);
 	new->size = TINY_SIZE;
