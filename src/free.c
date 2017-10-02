@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 17:32:06 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/02 12:45:15 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/02 15:36:33 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ void		concat_free_next(t_block *prev, t_block *cur)
 
 	next = cur->next ? cur->next : NULL;
 	cur->is_free = 1;
+	if (next == NULL)
+	{
+		cur->size += prev->size + BLOCK_SIZEOF;
+		cur = (void*)cur - prev->size - BLOCK_SIZEOF;
+		cur->is_free = 1;
+	}
 	if (next && next->is_free == 1 &&
 	(((void*)cur + cur->size + BLOCK_SIZEOF) == next))
 	{
@@ -67,7 +73,9 @@ void		munmap_page_small(t_block *page, size_t size, t_block *prev)
 		}
 		tmp = tmp->next;
 		if (find_block_for_free(page, &tmp) == NULL)
+		{
 			return ;
+		}
 	}
 }
 

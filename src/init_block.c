@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 14:21:18 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/02 14:48:08 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/02 15:42:47 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ t_block		*create_new(t_block *old, size_t size)
 
 	new = old;
 	old = (void*)new + size + BLOCK_SIZEOF;
-	printf("%p - %p, size: %zu, of: %zu\n", new + BLOCK_SIZEOF, old, size, BLOCK_SIZEOF);
 	old->is_free = new->is_free;
 	old->size = new->size - size - BLOCK_SIZEOF;
 	old->next = new->next;
@@ -45,7 +44,7 @@ t_block		*create_new(t_block *old, size_t size)
 	return (new);
 }
 
-t_block		*init_new_block_tiny()
+t_block		*init_new_block_tiny(void)
 {
 	t_block	*new;
 
@@ -61,7 +60,7 @@ t_block		*init_new_block_tiny()
 	return (new);
 }
 
-t_block		*init_new_block_small()
+t_block		*init_new_block_small(void)
 {
 	t_block	*new;
 

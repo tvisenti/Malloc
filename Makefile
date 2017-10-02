@@ -6,7 +6,7 @@
 #    By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/14 10:52:08 by tvisenti          #+#    #+#              #
-#    Updated: 2017/09/27 17:41:50 by tvisenti         ###   ########.fr        #
+#    Updated: 2017/10/02 15:38:32 by tvisenti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,4 +54,3 @@ re: fclean all
 norme:
 	@norminette $(LIB) $(INC)
 	@echo "\033[1;34mMalloc\t\t\033[1;33mNorminette\t\033[0;32m-OK-\033[0m"
-	@cd ./libft && $(MAKE) norme

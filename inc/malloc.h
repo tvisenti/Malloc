@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:51:23 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/02 14:21:08 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/02 15:42:05 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ void		*alloc_large(size_t size, void *p);
 
 t_block		*find_free_block(size_t size, int is_tiny);
 t_block		*create_new(t_block *old, size_t size);
-t_block		*init_new_block_small();
-t_block		*init_new_block_tiny();
+t_block		*init_new_block_small(void);
+t_block		*init_new_block_tiny(void);
 
 /*
 ** HANDLER_BLOCK
@@ -88,4 +88,4 @@ t_block		*get_last_block(t_block *cur);
 size_t	show_alloc_page(t_block *cur, char* zone);
 void		*my_malloc(size_t size);
 void		*realloc(void *ptr, size_t size);
-void		show_alloc_mem();
+void 		show_alloc_mem(void);
