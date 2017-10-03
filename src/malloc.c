@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:50:56 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/02 15:42:37 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/03 17:00:56 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,13 @@ int			main(void)
 	i = 0;
 	while (i < 10)
 	{
-		addr = (char*)my_malloc(1000);
+		addr = (char*)my_malloc(11);
 		addr[0] = 42;
-		my_free(addr);
-		// ft_printf("p: %p\n", addr);
+		addr = (char*)my_realloc(addr, 222);
+		// my_free(addr);
 		i++;
 	}
-	my_free(str);
 	show_alloc_mem();
+	my_free(str);
 	return (0);
 }

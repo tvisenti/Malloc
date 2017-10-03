@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:51:23 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/02 15:42:05 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/03 16:38:48 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 # define BLOCK_SIZEOF sizeof(t_block)
 # define PAGE_SIZEOF sizeof(t_page)
+# define SIZE_T_MAX ((size_t)-1 - getpagesize() * 2)
 
 typedef struct		s_block
 {
@@ -47,10 +48,18 @@ typedef struct		s_page
 t_page				g_page;
 
 /*
+** REALLOC
+*/
+t_block		*find_cur_block(t_block *cur, void *ptr);
+t_block 	*find_page_block(void *ptr);
+void		*realloc_copy_free(t_block *prev, void *ptr, size_t size);
+void		*my_realloc(void *ptr, size_t size);
+
+/*
 ** FREE
 */
 
-t_block		*find_block_for_free(t_block *cur, void *ptr);
+t_block		*find_prev_block(t_block *cur, void *ptr);
 void		concat_free_next(t_block *prev, t_block *cur);
 void		munmap_page_large(t_block *prev, t_block *freed);
 void		munmap_page_small(t_block *page, size_t size, t_block *prev);
@@ -85,7 +94,6 @@ t_block		*get_last_block(t_block *cur);
 ** MALLOC
 */
 
-size_t	show_alloc_page(t_block *cur, char* zone);
-void		*my_malloc(size_t size);
-void		*realloc(void *ptr, size_t size);
+size_t		show_alloc_page(t_block *cur, char* zone);
 void 		show_alloc_mem(void);
+void		*my_malloc(size_t size);

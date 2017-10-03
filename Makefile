@@ -6,7 +6,7 @@
 #    By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/14 10:52:08 by tvisenti          #+#    #+#              #
-#    Updated: 2017/10/02 15:38:32 by tvisenti         ###   ########.fr        #
+#    Updated: 2017/10/03 09:35:44 by tvisenti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ CFLAGS = -Wall -Werror -Wextra
 LIB_PATH = ./src
 OBJLIB_PATH = ./obj
 
-LIB_NAME =	malloc.c alloc_size.c handler_block.c init_block.c free.c \
+LIB_NAME =	malloc.c alloc_size.c handler_block.c \
+			init_block.c free.c realloc.c \
 
 OBJLIB_NAME = $(LIB_NAME:.c=.o)
 

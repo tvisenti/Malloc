@@ -6,13 +6,13 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 17:32:06 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/02 15:36:33 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/03 16:58:41 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/malloc.h"
 
-t_block		*find_block_for_free(t_block *cur, void *ptr)
+t_block		*find_prev_block(t_block *cur, void *ptr)
 {
 	t_block	*tmp;
 
@@ -71,11 +71,9 @@ void		munmap_page_small(t_block *page, size_t size, t_block *prev)
 			munmap(tmp, size);
 			return ;
 		}
-		tmp = tmp->next;
-		if (find_block_for_free(page, &tmp) == NULL)
-		{
+		if (find_prev_block(page, &tmp) == NULL)
 			return ;
-		}
+		tmp = tmp->next;
 	}
 }
 
@@ -98,17 +96,17 @@ void		my_free(void *ptr)
 	t_block	*free_ptr;
 
 	free_ptr = NULL;
-	if ((free_ptr = find_block_for_free(g_page.tiny, ptr)) != NULL)
+	if ((free_ptr = find_prev_block(g_page.tiny, ptr)) != NULL)
 	{
 		concat_free_next(free_ptr, free_ptr->next);
 		munmap_page_small(g_page.tiny, TINY_SIZE, free_ptr);
 	}
-	else if ((free_ptr = find_block_for_free(g_page.small, ptr)) != NULL)
+	else if ((free_ptr = find_prev_block(g_page.small, ptr)) != NULL)
 	{
 		concat_free_next(free_ptr, free_ptr->next);
 		munmap_page_small(g_page.small, SMALL_SIZE, free_ptr);
 	}
-	else if ((free_ptr = find_block_for_free(g_page.large, ptr)) != NULL)
+	else if ((free_ptr = find_prev_block(g_page.large, ptr)) != NULL)
 		munmap_page_large(free_ptr, free_ptr->next);
 	return ;
 }
