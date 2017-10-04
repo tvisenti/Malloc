@@ -1,16 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_block.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 14:21:18 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/02 15:42:47 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/04 12:03:11 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/malloc.h"
+
+t_block		*find_prev_block(t_block *cur, void *ptr)
+{
+	t_block	*tmp;
+
+	tmp = cur;
+	if (tmp == NULL || ptr == NULL)
+		return (NULL);
+	if ((void*)tmp + BLOCK_SIZEOF == ptr)
+		return (tmp);
+	while (tmp->next)
+	{
+		if (((void*)tmp->next + BLOCK_SIZEOF) == ptr)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
 
 t_block		*find_free_block(size_t size, int is_tiny)
 {

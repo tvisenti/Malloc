@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 09:31:07 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/03 17:13:16 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/04 12:22:11 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 t_block		*find_cur_block(t_block *cur, void *ptr)
 {
-	t_block *new;
+	t_block	*new;
 
 	new = find_prev_block(cur, ptr);
 	if (new && new->next != NULL && new->next->is_free == 0)
@@ -23,9 +23,9 @@ t_block		*find_cur_block(t_block *cur, void *ptr)
 	return (new);
 }
 
-t_block 	*find_page_block(void *ptr)
+t_block		*find_page_block(void *ptr)
 {
-	t_block *cur;
+	t_block	*cur;
 
 	cur = NULL;
 	if ((cur = find_cur_block(g_page.tiny, ptr)) != NULL)
@@ -43,20 +43,18 @@ void		*realloc_copy_free(t_block *prev, void *ptr, size_t size)
 	size_t	to_copy;
 	t_block *block;
 
-	new = my_malloc(size);
+	new = malloc(size);
 	block = find_page_block(new);
-	printf("block: %zu\n", block->size);
 	if (prev == NULL)
 		return (ptr);
 	to_copy = size < prev->size ? size : prev->size;
+	block = (void*)new - BLOCK_SIZEOF;
 	ft_memcpy(new, (void*)prev + BLOCK_SIZEOF, to_copy);
-	my_free((void*)prev + BLOCK_SIZEOF);
-
-
+	free((void*)prev + BLOCK_SIZEOF);
 	return (new);
 }
 
-void		*my_realloc(void *ptr, size_t size)
+void		*realloc(void *ptr, size_t size)
 {
 	t_block	*block;
 
@@ -64,7 +62,7 @@ void		*my_realloc(void *ptr, size_t size)
 	if ((int)size < 0 || size > SIZE_T_MAX)
 		return (ptr);
 	if (ptr == NULL)
-		return my_malloc(size);
+		return (malloc(size));
 	if ((block = find_page_block(ptr)) != NULL)
 		return (realloc_copy_free(block, ptr, size));
 	return (ptr);
