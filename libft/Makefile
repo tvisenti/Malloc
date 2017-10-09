@@ -6,7 +6,7 @@
 #    By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/28 10:56:39 by tvisenti          #+#    #+#              #
-#    Updated: 2017/10/09 14:07:11 by tvisenti         ###   ########.fr        #
+#    Updated: 2017/10/09 18:55:51 by tvisenti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,6 @@ LIB = $(addprefix $(LIB_PATH)/, $(LIB_NAME))
 OBJLIB = $(addprefix $(OBJLIB_PATH)/,$(OBJLIB_NAME))
 
 all: $(NAME)
-	@cd ./ft_printf && $(MAKE)
 
 $(NAME): $(OBJLIB)
 	@ar rc	$(NAME) $(OBJLIB)
@@ -59,11 +58,9 @@ clean:
 fclean: clean
 	@rm -rf ./obj $(NAME)
 	@echo "\033[1;34mLibft\t\t\033[1;33mCleaning lib\t\033[0;32m-OK-\033[0m"
-	@cd ./ft_printf && $(MAKE) fclean
 
 re: fclean all
 
 norme:
 	@echo "\033[1;34mLibft\t\t\033[1;33mNorminette\t\033[0;32m-OK-\033[0m"
 	@norminette $(LIB) $(INC)
-	@cd ./ft_printf && $(MAKE) norme
