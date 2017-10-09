@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 17:32:06 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/09 16:57:57 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/09 17:54:17 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,22 @@ void		munmap_page_small(t_block *page, size_t size, t_block *prev)
 	}
 }
 
-void		munmap_page_large(t_block *prev, t_block *freed)
+void		munmap_page_large(t_block *prev, t_block *freed, void *ptr)
 {
 	if (freed == NULL)
 	{
 		munmap(prev, prev->size);
 		g_page.large = NULL;
 	}
-	else
+	else if (ptr == freed)
 	{
 		prev->next = freed->next;
 		munmap(freed, freed->size);
+	}
+	else
+	{
+		munmap(prev, prev->size);
+		g_page.large = freed;
 	}
 }
 
@@ -106,6 +111,6 @@ void		free(void *ptr)
 		munmap_page_small(g_page.small, SMALL_SIZE, free_ptr);
 	}
 	else if ((free_ptr = find_prev_block(g_page.large, ptr)) != NULL)
-		munmap_page_large(free_ptr, free_ptr->next);
+		munmap_page_large(free_ptr, free_ptr->next, ptr);
 	return ;
 }

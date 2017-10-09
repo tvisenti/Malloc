@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:51:23 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/09 17:08:56 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/09 17:53:27 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void				*realloc(void *ptr, size_t size);
 
 void				set_ptr_free(t_block *prev, t_block *cur, void *ptr);
 void				concat_free_next(t_block *prev, t_block *cur, void *ptr);
-void				munmap_page_large(t_block *prev, t_block *freed);
+void				munmap_page_large(t_block *prev, t_block *freed, void *ptr);
 void				munmap_page_small(t_block *page, size_t size,
 					t_block *prev);
 void				free(void *ptr);

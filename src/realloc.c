@@ -6,18 +6,21 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 09:31:07 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/04 12:22:11 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/09 18:40:55 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/malloc.h"
 #include "../libft/inc/libft.h"
+#include <stdio.h>
 
 t_block		*find_cur_block(t_block *cur, void *ptr)
 {
 	t_block	*new;
 
 	new = find_prev_block(cur, ptr);
+	if ((void*)new + BLOCK_SIZEOF == ptr)
+		return (new);
 	if (new && new->next != NULL && new->next->is_free == 0)
 		return (new->next);
 	return (new);
@@ -65,5 +68,5 @@ void		*realloc(void *ptr, size_t size)
 		return (malloc(size));
 	if ((block = find_page_block(ptr)) != NULL)
 		return (realloc_copy_free(block, ptr, size));
-	return (ptr);
+	return (NULL);
 }
