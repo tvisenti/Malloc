@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/24 09:06:52 by tvisenti          #+#    #+#             */
-/*   Updated: 2016/06/17 11:49:49 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/09 15:00:23 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void				ft_putstr(char const *s);
 void				ft_putstrn(char *line);
 void				ft_putendl(char const *s);
 void				ft_putnbr(int n);
+void				ft_putnbr_base(intmax_t nbr, int base);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char const *s, int fd);
 void				ft_putendl_fd(char const *s, int fd);

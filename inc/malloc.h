@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:51:23 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/04 12:44:48 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/09 17:08:56 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MALLOC_H
 
 # include "../libft/inc/libft.h"
-# include "../libft/inc/ft_printf.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <sys/mman.h>
@@ -48,6 +47,23 @@ typedef struct		s_page
 }					t_page;
 
 t_page				g_page;
+
+/*
+** BONUS
+*/
+
+void				*calloc(size_t count, size_t size);
+void				*reallocf(void *ptr, size_t size);
+
+/*
+** DISPLAY
+*/
+
+void				display_p(void *p);
+void				display_p_and_p(void *p1, void *p2, size_t size);
+void				display_str_and_p(char *str, void *p);
+size_t				show_alloc_page(t_block *cur, char *zone);
+void				show_alloc_mem(void);
 
 /*
 ** REALLOC
@@ -99,8 +115,6 @@ t_block				*get_last_block(t_block *cur);
 ** MALLOC
 */
 
-size_t				show_alloc_page(t_block *cur, char *zone);
-void				show_alloc_mem(void);
 void				*malloc(size_t size);
 
 #endif

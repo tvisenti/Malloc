@@ -6,11 +6,15 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 14:21:18 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/04 12:03:11 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/09 16:57:01 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/malloc.h"
+
+/*
+** Trouve le block avant celui qu'on nous passe
+*/
 
 t_block		*find_prev_block(t_block *cur, void *ptr)
 {
@@ -29,6 +33,10 @@ t_block		*find_prev_block(t_block *cur, void *ptr)
 	}
 	return (NULL);
 }
+
+/*
+** Trouve le block free avec la bonne taille
+*/
 
 t_block		*find_free_block(size_t size, int is_tiny)
 {

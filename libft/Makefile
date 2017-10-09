@@ -6,7 +6,7 @@
 #    By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/28 10:56:39 by tvisenti          #+#    #+#              #
-#    Updated: 2016/06/15 10:18:57 by tvisenti         ###   ########.fr        #
+#    Updated: 2017/10/09 14:07:11 by tvisenti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ LIB_NAME =	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c \
 			ft_putstr.c ft_putendl.c ft_putnbr.c ft_putchar_fd.c ft_swap.c \
 			ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_strrev.c \
 			ft_str_delwhite.c ft_isupper.c ft_islower.c ft_lstadd.c \
-			ft_strocpy.c get_next_line.c ft_putstrn.c
+			ft_strocpy.c get_next_line.c ft_putstrn.c ft_putnbr_base.c
 
 OBJLIB_NAME = $(LIB_NAME:.c=.o)
 
@@ -46,10 +46,6 @@ all: $(NAME)
 $(NAME): $(OBJLIB)
 	@ar rc	$(NAME) $(OBJLIB)
 	@ranlib	$(NAME)
-	@echo "	_,  _ __, __, ___"
-	@echo "	|   | |_) |_   | "
-	@echo "	| , | |_) |    | "
-	@echo "	~~~ ~ ~   ~    ~ "
 	@echo "\033[1;34mLibft\t\t\033[1;33mCompilation\t\033[0;32m-OK-\033[0m"
 
 $(OBJLIB_PATH)/%.o: $(LIB_PATH)/%.c
@@ -68,6 +64,6 @@ fclean: clean
 re: fclean all
 
 norme:
-	@norminette $(LIB) $(INC)
 	@echo "\033[1;34mLibft\t\t\033[1;33mNorminette\t\033[0;32m-OK-\033[0m"
+	@norminette $(LIB) $(INC)
 	@cd ./ft_printf && $(MAKE) norme

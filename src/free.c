@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 17:32:06 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/04 15:37:45 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/09 16:57:57 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ void		set_ptr_free(t_block *prev, t_block *cur, void *ptr)
 		cur->is_free = 0;
 	}
 }
+
+/*
+** BONUS: Fait un merge des blocks free (hors zone)
+*/
 
 void		concat_free_next(t_block *prev, t_block *cur, void *ptr)
 {

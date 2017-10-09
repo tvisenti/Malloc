@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   test2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 15:07:07 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/04 15:15:42 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/09 16:31:35 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,14 @@ int			main(void)
 {
 	int		i;
 	char	*addr;
-	char	*str;
 
-	str = "TEST";
 	i = 0;
-	while (i < 10)
+	while (i < 1024)
 	{
-		addr = (char*)malloc(11);
+		addr = (char*)malloc(1024);
 		addr[0] = 42;
-		addr = (char*)realloc(addr, 222);
-		// free(addr);
-		printf("addr: %p\n", addr);
+		free(addr);
 		i++;
 	}
-	// show_alloc_mem();
-	// free(str);
 	return (0);
 }
