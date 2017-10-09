@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test3.c                                            :+:      :+:    :+:   */
+/*   test3++.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 15:07:07 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/09 17:59:08 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/09 18:41:15 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ void		print_s(char *s)
 int			main(void)
 {
 	char	*addr1;
+	char	*addr2;
 	char	*addr3;
 
 	addr1 = (char*)malloc(16*M);
 	strcpy(addr1, "Bonjours\n");
 	print_s(addr1);
+	addr2 = (char*)malloc(10*M);
 	addr3 = (char*)realloc(addr1, 128*M);
 	addr3[127*M] = 42;
 	print_s(addr3);
