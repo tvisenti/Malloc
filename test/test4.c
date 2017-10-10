@@ -6,11 +6,11 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 15:07:07 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/09 18:54:45 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/10 10:29:33 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./inc/malloc.h"
+#include "../inc/malloc.h"
 
 void		print_s(char *s)
 {
