@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 09:31:07 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/09 18:40:55 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/10 10:27:38 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,17 @@ void		*realloc(void *ptr, size_t size)
 	block = NULL;
 	if ((int)size < 0 || size > SIZE_T_MAX)
 		return (ptr);
+	pthread_mutex_lock(&g_malloc_lock);
 	if (ptr == NULL)
+	{
+		pthread_mutex_unlock(&g_malloc_lock);
 		return (malloc(size));
+	}
 	if ((block = find_page_block(ptr)) != NULL)
+	{
+		pthread_mutex_unlock(&g_malloc_lock);
 		return (realloc_copy_free(block, ptr, size));
+	}
+	pthread_mutex_unlock(&g_malloc_lock);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/09 15:03:02 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/09 15:05:35 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/10 10:32:20 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,12 @@ void		show_alloc_mem(void)
 	size_t	count;
 
 	count = 0;
+	pthread_mutex_lock(&g_malloc_lock);
 	count += show_alloc_page(g_page.tiny, "TINY");
 	count += show_alloc_page(g_page.small, "SMALL");
 	count += show_alloc_page(g_page.large, "LARGE");
 	ft_putstr("Total: ");
 	ft_putnbr(count);
 	ft_putstr("\n");
+	pthread_mutex_unlock(&g_malloc_lock);
 }

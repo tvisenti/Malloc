@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 10:51:23 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/09 17:53:27 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/10 10:25:10 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "../libft/inc/libft.h"
 # include <stdlib.h>
-# include <stdio.h>
+# include <pthread.h>
 # include <sys/mman.h>
 # include <unistd.h>
 
@@ -47,6 +47,7 @@ typedef struct		s_page
 }					t_page;
 
 t_page				g_page;
+pthread_mutex_t		g_malloc_lock;
 
 /*
 ** BONUS

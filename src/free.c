@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 17:32:06 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/09 17:54:17 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/10 10:27:08 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void		free(void *ptr)
 	free_ptr = NULL;
 	if (ptr == NULL)
 		return ;
+	pthread_mutex_lock(&g_malloc_lock);
 	if ((free_ptr = find_prev_block(g_page.tiny, ptr)) != NULL)
 	{
 		concat_free_next(free_ptr, free_ptr->next, ptr);
@@ -112,5 +113,6 @@ void		free(void *ptr)
 	}
 	else if ((free_ptr = find_prev_block(g_page.large, ptr)) != NULL)
 		munmap_page_large(free_ptr, free_ptr->next, ptr);
+	pthread_mutex_unlock(&g_malloc_lock);
 	return ;
 }

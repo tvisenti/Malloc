@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/09 15:06:43 by tvisenti          #+#    #+#             */
-/*   Updated: 2017/10/09 16:56:19 by tvisenti         ###   ########.fr       */
+/*   Updated: 2017/10/10 10:28:08 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ void		*reallocf(void *ptr, size_t size)
 
 	p = realloc(ptr, size);
 	if (ptr != p || p == NULL)
-	{
 		free(ptr);
-	}
 	return (p);
 }
